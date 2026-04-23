@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-23T00:00:00Z",
+  "source": "assets/iptv_list.m3u8",
+  "channels": [
+    {
+      "id": "al_aoula_inter_480p",
+      "name": "Al Aoula Inter (480p)",
+      "iconName": "tabler_news",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/alaoula/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 0
+        },
+        {
+          "url": "http://cdn-hls.globecast.tv/live/ramdisk/al_aoula_inter/hls_snrt/index.m3u8",
+          "protocol": "hls",
+          "quality": 1
+        }
+      ],
+      "country": "Morocco",
+      "category": "General",
+      "order": 1,
+      "isActive": true
+    },
+    {
+      "id": "al_aoula_international_360p_1",
+      "name": "Al Aoula International (360p)",
+      "iconName": "tabler_news",
+      "streamUrls": [
+        {
+          "url": "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/2m_monde/hls_video_ts/2m_monde.m3u8",
+          "protocol": "hls",
+          "quality": 0
+        },
+        {
+          "url": "http://livecdnh2.tvanywhere.ae/hls/2m_maroc/04.m3u8",
+          "protocol": "hls",
+          "quality": 1
+        }
+      ],
+      "country": "Morocco",
+      "category": "General",
+      "order": 2,
+      "isActive": true
+    },
+    {
+      "id": "al_aoula_international_360p_2",
+      "name": "Al Aoula International (360p)",
+      "iconName": "tabler_news",
+      "streamUrls": [
+        {
+          "url": "https://cdn-globecast.akamaized.net/live/eds/al_aoula_inter/hls_snrt/al_aoula_inter.m3u8",
+          "protocol": "hls",
+          "quality": 2
+        }
+      ],
+      "country": "Morocco",
+      "category": "General",
+      "order": 3,
+      "isActive": true
+    },
+    {
+      "id": "2m",
+      "name": "2M",
+      "iconName": "tabler_tv",
+      "streamUrls": [
+        {
+          "url": "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/2m_monde/hls_video_ts/2m_monde.m3u8",
+          "protocol": "hls",
+          "quality": 0
+        }
+      ],
+      "country": "Morocco",
+      "category": "General",
+      "order": 4,
+      "isActive": true
+    },
+    {
+      "id": "2m_monde_plus1_1080p",
+      "name": "2M Monde +1 (1080p)",
+      "iconName": "tabler_tv",
+      "streamUrls": [
+        {
+          "url": "https://cdnamd-hls-globecast.akamaized.net/live/ramdisk/2m_monde/hls_video_ts/2m_monde.m3u8",
+          "protocol": "hls",
+          "quality": 0
+        }
+      ],
+      "country": "Morocco",
+      "category": "General",
+      "order": 5,
+      "isActive": true
+    }
+  ]
+}
