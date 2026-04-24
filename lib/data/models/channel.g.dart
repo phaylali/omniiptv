@@ -15,6 +15,7 @@ Channel _$ChannelFromJson(Map<String, dynamic> json) => Channel(
       .toList(),
   country: json['country'] as String?,
   category: json['category'] as String?,
+  logoUrl: json['logoUrl'] as String?,
   order: (json['order'] as num).toInt(),
   isActive: json['isActive'] as bool,
 );
@@ -26,6 +27,7 @@ Map<String, dynamic> _$ChannelToJson(Channel instance) => <String, dynamic>{
   'streamUrls': instance.streamUrls,
   'country': instance.country,
   'category': instance.category,
+  'logoUrl': instance.logoUrl,
   'order': instance.order,
   'isActive': instance.isActive,
 };

@@ -24,31 +24,49 @@ class _OverlayColumnState extends ConsumerState<OverlayColumn> {
 
   void _resetHideTimer() {
     _hideTimer?.cancel();
+    final currentType = ref.read(overlayTypeProvider);
+    
+    // Never start a timer for settings
+    if (currentType == OverlayType.settings) {
+      return;
+    }
+
     _hideTimer = Timer(AppConstants.overlayAutoHideDuration, () {
-      ref.read(showOverlayProvider.notifier).state = false;
+      // Double check before closing
+      final type = ref.read(overlayTypeProvider);
+      if (type != OverlayType.settings) {
+        debugPrint('Auto-hiding overlay of type: $type');
+        ref.read(showOverlayProvider.notifier).state = false;
+      }
     });
   }
 
   void _showOverlay(OverlayType type) {
-    ref.read(showOverlayProvider.notifier).state = true;
     ref.read(overlayTypeProvider.notifier).state = type;
+    ref.read(showOverlayProvider.notifier).state = true;
     _resetHideTimer();
   }
 
   @override
-  Widget build(BuildContext context) {
-    // Add listener only once
-    if (!_listenerAdded) {
-      _listenerAdded = true;
-      ref.listen<bool>(showOverlayProvider, (previous, isVisible) {
-        if (isVisible) {
+  void initState() {
+    super.initState();
+    // Persistence listener
+    ref.listenManual<bool>(showOverlayProvider, (previous, isVisible) {
+      if (isVisible) {
+        final currentType = ref.read(overlayTypeProvider);
+        if (currentType != OverlayType.settings) {
           _resetHideTimer();
         } else {
           _hideTimer?.cancel();
         }
-      });
-    }
+      } else {
+        _hideTimer?.cancel();
+      }
+    });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final showOverlay = ref.watch(showOverlayProvider);
 
     if (!showOverlay) return const SizedBox.shrink();

@@ -14,6 +14,7 @@ class Channel {
   final List<StreamUrl> streamUrls;
   final String? country;
   final String? category;
+  final String? logoUrl;
   final int order;
   final bool isActive;
 
@@ -24,6 +25,7 @@ class Channel {
     required this.streamUrls,
     this.country,
     this.category,
+    this.logoUrl,
     required this.order,
     required this.isActive,
   });
@@ -66,6 +68,7 @@ class Channel {
     List<StreamUrl>? streamUrls,
     String? country,
     String? category,
+    String? logoUrl,
     int? order,
     bool? isActive,
   }) {
@@ -76,6 +79,7 @@ class Channel {
       streamUrls: streamUrls ?? this.streamUrls,
       country: country ?? this.country,
       category: category ?? this.category,
+      logoUrl: logoUrl ?? this.logoUrl,
       order: order ?? this.order,
       isActive: isActive ?? this.isActive,
     );

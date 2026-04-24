@@ -22,25 +22,70 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   void initState() {
     super.initState();
     // Listen for channel changes
-    ref.listen<Channel?>(currentChannelProvider, (previous, next) {
+    ref.listenManual<Channel?>(currentChannelProvider, (previous, next) {
       if (next != null && next != previous) {
         _initializePlayer(next);
       }
     });
     // Listen for volume changes
-    ref.listen<double>(volumeProvider, (previous, next) {
+    ref.listenManual<double>(volumeProvider, (previous, next) {
       if (previous != next) {
         _player?.setVolume(next * 100); // media_kit uses 0-100
       }
     });
+
+    // Initial play if channel already selected
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final initialChannel = ref.read(currentChannelProvider);
+      if (initialChannel != null) {
+        _initializePlayer(initialChannel);
+      }
+    });
   }
 
+  bool _isInitializing = false;
+
   Future<void> _initializePlayer(Channel channel) async {
-    // Dispose previous player
-    await _player?.dispose();
-    _player = Player();
-    _controller = VideoController(_player!);
-    _errorMessage = '';
+    if (_isInitializing) return;
+    _isInitializing = true;
+
+    try {
+      // Dispose previous player
+      final oldPlayer = _player;
+      _player = null;
+      _controller = null;
+      await oldPlayer?.dispose();
+
+      // Create new player with performance tweaks
+      _player = Player(
+        configuration: const PlayerConfiguration(
+          vo: 'gpu-next', // Use the new high-performance GPU output
+        ),
+      );
+
+      // Performance & Smoothing settings
+      if (_player!.platform is NativePlayer) {
+        await (_player!.platform as NativePlayer).setProperty('profile', 'low-latency');
+        await (_player!.platform as NativePlayer).setProperty('hwdec', 'auto-safe');
+        await (_player!.platform as NativePlayer).setProperty('video-sync', 'display-resample');
+        await (_player!.platform as NativePlayer).setProperty('interpolation', 'yes');
+        await (_player!.platform as NativePlayer).setProperty('tscale', 'oversample');
+        await (_player!.platform as NativePlayer).setProperty('vd-lavc-threads', '8');
+        await (_player!.platform as NativePlayer).setProperty('deinterlace', 'yes');
+        await (_player!.platform as NativePlayer).setProperty('cache', 'yes');
+        await (_player!.platform as NativePlayer).setProperty('demuxer-max-bytes', '500M');
+        await (_player!.platform as NativePlayer).setProperty('demuxer-max-back-bytes', '100M');
+      }
+
+      _controller = VideoController(
+        _player!,
+        configuration: const VideoControllerConfiguration(
+          enableHardwareAcceleration: true,
+        ),
+      );
+      
+      _errorMessage = '';
+      setState(() {}); // Refresh to show loader and new controller
 
     // Try each stream URL until one works
     for (final streamUrl in channel.streamUrls) {
@@ -61,6 +106,21 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
         }
 
         final media = Media(url, httpHeaders: headers);
+        
+        // Apply resolution limits based on channel quality
+        if (_player!.platform is NativePlayer) {
+          if (streamUrl.quality > 0 && streamUrl.quality <= 480) {
+            // Force 480p or lower
+            await (_player!.platform as NativePlayer).setProperty(
+              'ytdl-format', 
+              'bestvideo[height<=480]+bestaudio/best[height<=480]'
+            );
+          } else {
+            // Allow best quality
+            await (_player!.platform as NativePlayer).setProperty('ytdl-format', 'best');
+          }
+        }
+
         await _player!.open(media, play: true);
         // Set initial volume
         final volume = ref.read(volumeProvider);
@@ -70,19 +130,18 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
         });
         break; // Success, stop trying
       } catch (e) {
-        // Dispose current player and try next
-        await _player?.dispose();
-        _player = null;
-        _controller = null;
         // Continue to next URL
       }
     }
 
     // If all URLs failed
-    if (_player == null) {
+    if (_player == null || !(_player!.state.playing)) {
       setState(() {
         _errorMessage = 'Failed to load any stream for ${channel.name}';
       });
+    }
+    } finally {
+      _isInitializing = false;
     }
   }
 

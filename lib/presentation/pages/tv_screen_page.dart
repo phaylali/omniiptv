@@ -35,6 +35,44 @@ class _TvScreenPageState extends ConsumerState<TvScreenPage> {
     if (Platform.isAndroid) {
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     }
+
+    // Persistence listeners
+    ref.listenManual<double>(volumeProvider, (previous, next) {
+      if (previous != next) {
+        StorageService.saveVolume(next);
+      }
+    });
+
+    ref.listenManual<Channel?>(currentChannelProvider, (previous, next) {
+      if (next != null) {
+        StorageService.saveCurrentChannelId(next.id);
+      }
+    });
+
+    // Initial loads
+    Future.microtask(() async {
+      final savedVolume = await StorageService.loadVolume();
+      if (mounted) {
+        ref.read(volumeProvider.notifier).state = savedVolume;
+      }
+    });
+
+    Future.microtask(() async {
+      // Need to wait for the provider to be ready
+      final channels = await ref.read(channelListProvider.future);
+      if (mounted && channels.channels.isNotEmpty) {
+        final savedChannelId = await StorageService.loadCurrentChannelId();
+        if (savedChannelId != null) {
+          final index =
+              channels.channels.indexWhere((c) => c.id == savedChannelId);
+          if (index != -1) {
+            ref.read(channelIndexProvider.notifier).state = index;
+            return;
+          }
+        }
+        ref.read(channelIndexProvider.notifier).state = 0;
+      }
+    });
   }
 
   @override
@@ -45,46 +83,6 @@ class _TvScreenPageState extends ConsumerState<TvScreenPage> {
 
   @override
   Widget build(BuildContext context) {
-    // One-time setup after first build
-    if (!_listenersAdded) {
-      _listenersAdded = true;
-
-      // Persistence listeners
-      ref.listen<double>(volumeProvider, (previous, next) {
-        if (previous != next) {
-          StorageService.saveVolume(next);
-        }
-      });
-
-      ref.listen<Channel?>(currentChannelProvider, (previous, next) {
-        if (next != null) {
-          StorageService.saveCurrentChannelId(next.id);
-        }
-      });
-
-      // Initial loads
-      Future.microtask(() async {
-        final savedVolume = await StorageService.loadVolume();
-        if (mounted) {
-          ref.read(volumeProvider.notifier).state = savedVolume;
-        }
-      });
-
-      Future.microtask(() async {
-        final channels = ref.read(activeChannelsProvider);
-        if (channels.isNotEmpty) {
-          final savedChannelId = await StorageService.loadCurrentChannelId();
-          if (savedChannelId != null) {
-            final index = channels.indexWhere((c) => c.id == savedChannelId);
-            if (index != -1) {
-              ref.read(channelIndexProvider.notifier).state = index;
-              return;
-            }
-          }
-          ref.read(channelIndexProvider.notifier).state = 0;
-        }
-      });
-    }
 
     final showOverlay = ref.watch(showOverlayProvider);
     final overlayType = ref.watch(overlayTypeProvider);

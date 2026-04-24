@@ -1,7 +1,20 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:logger/logger.dart';
+
 void main() {
+  final logger = Logger(
+    printer: PrettyPrinter(
+      methodCount: 0,
+      errorMethodCount: 5,
+      lineLength: 80,
+      colors: true,
+      printEmojis: true,
+      dateTimeFormat: DateTimeFormat.dateAndTime,
+    ),
+  );
+  
   final file = File('assets/morocco.m3u');
   final content = file.readAsStringSync();
   final lines = content.split('\n');
@@ -10,6 +23,7 @@ void main() {
   String? currentName;
   String? currentGroup;
   String? currentUrl;
+  String? currentLogo;
 
   for (var line in lines) {
     line = line.trim();
@@ -22,6 +36,9 @@ void main() {
       // Extract group-title
       final groupMatch = RegExp(r'group-title="([^"]*)"').firstMatch(line);
       currentGroup = groupMatch?.group(1) ?? 'Other';
+      // Extract tvg-logo
+      final logoMatch = RegExp(r'tvg-logo="([^"]*)"').firstMatch(line);
+      currentLogo = logoMatch?.group(1);
     } else if (line.isNotEmpty &&
         !line.startsWith('#') &&
         currentName != null) {
@@ -75,23 +92,44 @@ void main() {
         '_',
       );
 
-      channels.add({
-        'id': id,
-        'name': currentName,
-        'iconName': iconName,
-        'streamUrls': [
-          {'url': currentUrl, 'protocol': protocol, 'quality': 0},
-        ],
-        'country': 'Morocco',
-        'category': currentGroup ?? 'General',
-        'order': channels.length + 1,
-        'isActive': true,
-      });
+      final baseOrder = channels.length;
+      
+      // HD Variant
+            channels.add({
+              'id': id,
+              'name': currentName,
+              'iconName': iconName,
+              'logoUrl': currentLogo,
+              'streamUrls': [
+                {'url': currentUrl, 'protocol': 'hls', 'quality': 1080},
+              ],
+              'country': 'Morocco',
+              'category': currentGroup ?? 'General',
+              'order': baseOrder + 1,
+              'isActive': true,
+            });
 
-      currentName = null;
-      currentUrl = null;
-    }
-  }
+      // SD Variant (480p)
+            channels.add({
+              'id': '${id}_sd',
+              'name': '$currentName (SD)',
+              'iconName': iconName,
+              'logoUrl': currentLogo,
+              'streamUrls': [
+                {'url': currentUrl, 'protocol': 'hls', 'quality': 480},
+              ],
+              'country': 'Morocco',
+              'category': currentGroup ?? 'General',
+              'order': baseOrder + 2,
+              'isActive': true,
+            });
+
+            currentName = null;
+            currentUrl = null;
+            currentLogo = null;
+          }
+        }
+      
 
   final output = {
     'version': '1.0.0',
@@ -100,10 +138,10 @@ void main() {
     'channels': channels,
   };
 
-  final outFile = File('assets/channels_generated.json');
+  final outFile = File('assets/channels.json');
   final jsonEncoder = JsonEncoder.withIndent('  ');
   outFile.writeAsStringSync(jsonEncoder.convert(output));
-  print(
-    'Generated ${channels.length} channels to assets/channels_generated.json',
+  logger.i(
+    'Generated ${channels.length} channels to assets/channels.json',
   );
 }

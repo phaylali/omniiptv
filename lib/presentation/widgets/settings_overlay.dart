@@ -18,11 +18,24 @@ class _SettingsOverlayState extends ConsumerState<SettingsOverlay> {
   String _importUrl = 'https://iptv-org.github.io/iptv/countries/ma.m3u';
   String? _importError;
   ImportResult? _lastImportResult;
+  String? _reorderingId;
 
   @override
   void initState() {
     super.initState();
     _loadChannels();
+  }
+
+  void _moveUp(int index) {
+    if (index > 0) {
+      _reorderChannels(index, index - 1);
+    }
+  }
+
+  void _moveDown(int index) {
+    if (index < _channels.length - 1) {
+      _reorderChannels(index, index + 2);
+    }
   }
 
   Future<void> _loadChannels() async {
@@ -133,21 +146,84 @@ class _SettingsOverlayState extends ConsumerState<SettingsOverlay> {
           ),
           // Content
           Expanded(
-            child: Row(
+            child: Column(
               children: [
-                // Left: Channel list management
+                // Top: Import settings
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  color: Colors.grey[800]!.withValues(alpha: 0.5),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'M3U Import:',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            hintText: 'M3U Playlist URL',
+                            hintStyle: TextStyle(color: Colors.white38),
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          ),
+                          style: const TextStyle(color: Colors.white, fontSize: 14),
+                          controller: TextEditingController(text: _importUrl)
+                            ..selection = TextSelection.fromPosition(
+                              TextPosition(offset: _importUrl.length),
+                            ),
+                          onChanged: (value) => _importUrl = value,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      if (_isImporting)
+                        const CircularProgressIndicator()
+                      else
+                        ElevatedButton(
+                          onPressed: _importM3U,
+                          child: const Text('Import'),
+                        ),
+                    ],
+                  ),
+                ),
+                if (_importError != null)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(8),
+                    color: Colors.red.withValues(alpha: 0.2),
+                    child: Text(
+                      _importError!,
+                      style: const TextStyle(color: Colors.red),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                if (_lastImportResult != null && _lastImportResult!.errors.isEmpty)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(8),
+                    color: Colors.green.withValues(alpha: 0.2),
+                    child: Text(
+                      'Imported ${_lastImportResult!.channelsAdded} channels',
+                      style: const TextStyle(color: Colors.green),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                // Bottom: Channel list management
                 Expanded(
-                  flex: 2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         child: Text(
-                          'Channel List',
+                          'Channel List (Drag to reorder)',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -158,32 +234,79 @@ class _SettingsOverlayState extends ConsumerState<SettingsOverlay> {
                             : ReorderableListView(
                                 onReorder: _reorderChannels,
                                 children: _channels.map((channel) {
+                                  final isReordering = _reorderingId == channel.id;
+                                  final index = _channels.indexOf(channel);
+
                                   return Container(
                                     key: ValueKey(channel.id),
-                                    color: Colors.grey[900],
+                                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: isReordering ? Colors.blue.withValues(alpha: 0.2) : Colors.grey[900],
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: isReordering ? Colors.blue : Colors.white10,
+                                        width: isReordering ? 2 : 1,
+                                      ),
+                                    ),
                                     child: ListTile(
-                                      leading: Icon(
-                                        channel.icon,
-                                        color: Colors.white,
+                                      onTap: () {
+                                        setState(() {
+                                          if (_reorderingId == channel.id) {
+                                            _reorderingId = null;
+                                          } else {
+                                            _reorderingId = channel.id;
+                                          }
+                                        });
+                                      },
+                                      leading: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: channel.logoUrl != null
+                                            ? Image.network(
+                                                channel.logoUrl!,
+                                                fit: BoxFit.contain,
+                                                errorBuilder: (context, error, stackTrace) =>
+                                                    Icon(channel.icon, color: Colors.white),
+                                              )
+                                            : Icon(channel.icon, color: Colors.white),
                                       ),
                                       title: Text(
                                         channel.name,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.white,
+                                          fontWeight: isReordering ? FontWeight.bold : FontWeight.normal,
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                        isReordering ? 'Use arrows to move up/down' : (channel.category ?? 'General'),
+                                        style: TextStyle(
+                                          color: isReordering ? Colors.blue[300] : Colors.white38,
+                                          fontSize: 12,
                                         ),
                                       ),
                                       trailing: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Switch(
-                                            value: channel.isActive,
-                                            onChanged: (value) =>
-                                                _toggleChannel(channel),
-                                          ),
-                                          const Icon(
-                                            Icons.drag_handle,
-                                            color: Colors.white54,
-                                          ),
+                                          if (isReordering) ...[
+                                            IconButton(
+                                              icon: const Icon(Icons.arrow_upward, color: Colors.blue),
+                                              onPressed: () => _moveUp(index),
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(Icons.arrow_downward, color: Colors.blue),
+                                              onPressed: () => _moveDown(index),
+                                            ),
+                                          ] else ...[
+                                            Switch(
+                                              value: channel.isActive,
+                                              onChanged: (value) =>
+                                                  _toggleChannel(channel),
+                                            ),
+                                            const Icon(
+                                              Icons.drag_handle,
+                                              color: Colors.white54,
+                                            ),
+                                          ],
                                         ],
                                       ),
                                     ),
@@ -192,74 +315,6 @@ class _SettingsOverlayState extends ConsumerState<SettingsOverlay> {
                               ),
                       ),
                     ],
-                  ),
-                ),
-                // Right: Import settings
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    padding: const EdgeInsets.all(16),
-                    color: Colors.grey[800]!.withValues(alpha: 0.5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'M3U Import',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        TextField(
-                          decoration: const InputDecoration(
-                            labelText: 'M3U Playlist URL',
-                            labelStyle: TextStyle(color: Colors.white70),
-                            border: OutlineInputBorder(),
-                          ),
-                          style: const TextStyle(color: Colors.white),
-                          controller: TextEditingController(text: _importUrl)
-                            ..selection = TextSelection.fromPosition(
-                              TextPosition(offset: _importUrl.length),
-                            ),
-                          onChanged: (value) => _importUrl = value,
-                        ),
-                        const SizedBox(height: 16),
-                        if (_isImporting)
-                          const Center(child: CircularProgressIndicator())
-                        else
-                          ElevatedButton(
-                            onPressed: _importM3U,
-                            child: const Text('Import'),
-                          ),
-                        const SizedBox(height: 16),
-                        if (_importError != null)
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            color: Colors.red.withValues(alpha: 0.2),
-                            child: Text(
-                              _importError!,
-                              style: const TextStyle(color: Colors.red),
-                            ),
-                          ),
-                        if (_lastImportResult != null &&
-                            _lastImportResult!.errors.isEmpty)
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            color: Colors.green.withValues(alpha: 0.2),
-                            child: Text(
-                              'Imported ${_lastImportResult!.channelsAdded} channels',
-                              style: const TextStyle(color: Colors.green),
-                            ),
-                          ),
-                        const SizedBox(height: 32),
-                        const Text(
-                          'Note: Imported channels will be appended to the end of the list. You can reorder them manually.',
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
               ],

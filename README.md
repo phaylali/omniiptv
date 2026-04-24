@@ -5,19 +5,18 @@ OmniIPTV is a Flutter-based IPTV application designed for TV streaming on Linux 
 ## Features
 
 - **Full-Screen TV Interface**: Immersive viewing experience with no visible UI by default
-- **Keyboard & Remote Controls**: Navigate channels (up/down), adjust volume (left/right), show/hide overlays (Enter/Escape)
+- **Dual Quality Streams**: Automatically generated SD (480p) variants for every channel for smooth playback
+- **Keyboard & Remote Controls**: Optimized for D-pad navigation and media keys
 - **Overlay System**:
   - Right-side icon column for quick access
-  - Top channel switch notifications
-  - Channel list grid for browsing
-  - Info display for current channel
-  - Volume slider
-  - Settings for channel management
-- **Multi-Protocol Streaming**: Primary HLS support with DASH/RTMP/progressive fallbacks
-- **Channel Management**: Enable/disable channels, reorder, update from online sources
-- **Platform Support**: Linux desktop with F11 fullscreen, Android TV with immersive mode
-- **Automatic Updates**: Periodic fetching of channel lists from iptv-org
-- **State Persistence**: Saves channel settings and preferences locally
+  - Top channel switch notifications with logos
+  - Vertical channel list for easy browsing
+  - Settings for channel management (reorder, enable/disable, import)
+- **Logos & Metadata**: Integrated channel logos with fallback icon system
+- **Multi-Protocol Streaming**: HLS support with adaptive bitrate via `media_kit`
+- **Channel Management**: Reorder channels with drag-and-drop, custom M3U import
+- **Platform Support**: Linux desktop (F11 fullscreen) and Android TV (immersive)
+- **State Persistence**: Saves channel order and preferences locally
 
 ## Screenshots
 
@@ -111,13 +110,32 @@ flutter build apk --target-platform android-arm64
 3. Make your changes
 4. Run tests: `flutter test`
 5. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments
 
 - [iptv-org](https://github.com/iptv-org/iptv) for channel data
 - Flutter community for amazing framework
 - Tabler Icons for UI icons
+
+## License
+
+MIT License
+
+## Support Us
+
+<p align="center">
+  <a href="https://ko-fi.com/omniversify">
+    <img src="https://raw.githubusercontent.com/phaylali/Omniversify/main/public/images/kofi_logo.svg" width="200" alt="Ko-Fi" />
+  </a>
+</p>
+
+<p align="center">
+  <strong>Keep us going</strong>
+</p>
+
+---
+
+&copy; 2026 [Omniversify](https://omniversify.com). All rights reserved.
+
+_Made by Moroccans, for the Omniverse_
+
+[![ReadMeSupportPalestine](https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/banner-project.svg)](https://donate.unrwa.org/-landing-page/en_EN)

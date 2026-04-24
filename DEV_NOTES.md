@@ -199,15 +199,15 @@ assets/
 ## Future Improvements
 
 - Fix IPTV streaming reliability (VPN integration, better fallback handling)
-- EPG (Electronic Program Guide) integration
-- Favorites system
-- Search functionality
+- EPG (Electronic Program Guide) integration (High Priority)
+- Favorites system for quick access
+- Search functionality within channel list
+- Advanced stream quality selection (automatic vs manual)
 - Parental controls
-- Offline channel caching
-- Advanced stream quality selection
-- Custom channel icons
+- Offline channel metadata caching
 - Multi-language support
-- RTMP/DASH protocol support with ffmpeg fallback
+- Better hardware acceleration support for Linux (EGL/Mesa tuning)
+- Custom logo upload/override support
 
 ## Build & Deployment
 
@@ -253,4 +253,6 @@ flutter build apk --target-platform android-arm64 --release
 
 ---
 
-*Last updated: 2026-04-23*
+---
+
+*Last updated: 2026-04-24*

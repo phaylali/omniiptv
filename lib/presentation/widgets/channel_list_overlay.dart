@@ -35,20 +35,17 @@ class ChannelListOverlay extends ConsumerWidget {
               ],
             ),
           ),
-          // Grid
+          // List
           Expanded(
-            child: GridView.builder(
+            child: ListView.builder(
               padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 1.5,
-              ),
               itemCount: channels.length,
               itemBuilder: (context, index) {
                 final channel = channels[index];
-                return ChannelTile(channel: channel);
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: ChannelTile(channel: channel),
+                );
               },
             ),
           ),
@@ -78,20 +75,56 @@ class ChannelTile extends ConsumerWidget {
         }
       },
       child: Container(
+        height: 80,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.grey[800],
+          color: isSelected ? Colors.blue.withValues(alpha: 0.3) : Colors.grey[900],
           borderRadius: BorderRadius.circular(8),
+          border: isSelected ? Border.all(color: Colors.blue, width: 2) : null,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Row(
           children: [
-            Icon(channel.icon, color: Colors.white, size: 32),
-            const SizedBox(height: 8),
-            Text(
-              channel.name,
-              style: const TextStyle(color: Colors.white, fontSize: 12),
-              textAlign: TextAlign.center,
+            const SizedBox(width: 16),
+            SizedBox(
+              width: 60,
+              height: 60,
+              child: channel.logoUrl != null
+                  ? Image.network(
+                      channel.logoUrl!,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) =>
+                          Icon(channel.icon, color: Colors.white, size: 30),
+                    )
+                  : Icon(channel.icon, color: Colors.white, size: 30),
             ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    channel.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    channel.category ?? 'General',
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (isSelected)
+              const Padding(
+                padding: EdgeInsets.only(right: 16.0),
+                child: Icon(Icons.play_circle_fill, color: Colors.blue, size: 32),
+              ),
           ],
         ),
       ),

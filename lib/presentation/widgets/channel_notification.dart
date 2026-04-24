@@ -30,6 +30,13 @@ class _ChannelNotificationState extends ConsumerState<ChannelNotification>
         Tween<Offset>(begin: const Offset(0, -1), end: Offset.zero).animate(
           CurvedAnimation(parent: _animationController!, curve: Curves.easeOut),
         );
+
+    // Channel change listener
+    ref.listenManual<Channel?>(currentChannelProvider, (previous, next) {
+      if (next != null && next != previous) {
+        _showNotification();
+      }
+    });
   }
 
   @override
@@ -59,16 +66,6 @@ class _ChannelNotificationState extends ConsumerState<ChannelNotification>
 
   @override
   Widget build(BuildContext context) {
-    // Add listener only once
-    if (!_listenerAdded) {
-      _listenerAdded = true;
-      ref.listen<Channel?>(currentChannelProvider, (previous, next) {
-        if (next != null && next != previous) {
-          _showNotification();
-        }
-      });
-    }
-
     final channel = ref.watch(currentChannelProvider);
     if (channel == null) return const SizedBox.shrink();
 
@@ -79,22 +76,43 @@ class _ChannelNotificationState extends ConsumerState<ChannelNotification>
       },
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(16),
-        color: Colors.black.withValues(alpha: 0.8),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+        color: Colors.black.withValues(alpha: 0.3),
         child: Row(
           children: [
             Text(
               channel.order.toString().padLeft(2, '0'),
-              style: const TextStyle(color: Colors.white, fontSize: 24),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 72, // Tripled from 24
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: Text(
                 channel.name,
-                style: const TextStyle(color: Colors.white, fontSize: 24),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 50, // 0.7 of 72 is ~50
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            Icon(channel.icon, color: Colors.white, size: 32),
+            const SizedBox(width: 32),
+            SizedBox(
+              width: 150, // Tripled from 50
+              height: 150, // Tripled from 50
+              child: channel.logoUrl != null
+                  ? Image.network(
+                      channel.logoUrl!,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) =>
+                          Icon(channel.icon, color: Colors.white, size: 96), // Tripled icon size too
+                    )
+                  : Icon(channel.icon, color: Colors.white, size: 96),
+            ),
           ],
         ),
       ),

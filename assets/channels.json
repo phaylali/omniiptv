@@ -1,17 +1,18 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-04-24T02:55:41.578002",
+  "lastUpdated": "2026-04-24T04:44:03.348539",
   "source": "assets/morocco.m3u",
   "channels": [
     {
       "id": "al_aoula_hd",
       "name": "Al Aoula HD",
-      "iconName": "tabler_tv",
+      "iconName": "tabler_news",
+      "logoUrl": "https://livemediama.com/static/img/channels/alaoula.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/alaoula/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
@@ -20,14 +21,15 @@
       "isActive": true
     },
     {
-      "id": "al_aoula_tnt_hd",
-      "name": "Al Aoula TNT HD",
-      "iconName": "tabler_tv",
+      "id": "al_aoula_hd_sd",
+      "name": "Al Aoula HD (SD)",
+      "iconName": "tabler_news",
+      "logoUrl": "https://livemediama.com/static/img/channels/alaoula.png",
       "streamUrls": [
         {
-          "url": "https://stream-lb.livemediama.com/alaoula-tnt/hls/master.m3u8",
+          "url": "https://stream-lb.livemediama.com/alaoula/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 480
         }
       ],
       "country": "Morocco",
@@ -36,291 +38,649 @@
       "isActive": true
     },
     {
+      "id": "al_aoula_tnt_hd",
+      "name": "Al Aoula TNT HD",
+      "iconName": "tabler_news",
+      "logoUrl": "https://livemediama.com/static/img/channels/alaoula.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/alaoula-tnt/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 1080
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT",
+      "order": 3,
+      "isActive": true
+    },
+    {
+      "id": "al_aoula_tnt_hd_sd",
+      "name": "Al Aoula TNT HD (SD)",
+      "iconName": "tabler_news",
+      "logoUrl": "https://livemediama.com/static/img/channels/alaoula.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/alaoula-tnt/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT",
+      "order": 4,
+      "isActive": true
+    },
+    {
       "id": "2m_tv_hd",
       "name": "2M TV HD",
       "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/2m.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/2m/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 2M",
-      "order": 3,
+      "order": 5,
+      "isActive": true
+    },
+    {
+      "id": "2m_tv_hd_sd",
+      "name": "2M TV HD (SD)",
+      "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/2m.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/2m/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 2M",
+      "order": 6,
       "isActive": true
     },
     {
       "id": "2m_tnt_hd",
       "name": "2M TNT HD",
       "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/2m.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/2m-tnt/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 2M",
-      "order": 4,
+      "order": 7,
+      "isActive": true
+    },
+    {
+      "id": "2m_tnt_hd_sd",
+      "name": "2M TNT HD (SD)",
+      "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/2m.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/2m-tnt/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 2M",
+      "order": 8,
       "isActive": true
     },
     {
       "id": "medi1tv_maghreb",
       "name": "Medi1TV Maghreb",
       "iconName": "tabler_news",
+      "logoUrl": "https://livemediama.com/static/img/channels/medi1tv-maghreb.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/medi1tv-maghreb/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 Medi1",
-      "order": 5,
+      "order": 9,
+      "isActive": true
+    },
+    {
+      "id": "medi1tv_maghreb_sd",
+      "name": "Medi1TV Maghreb (SD)",
+      "iconName": "tabler_news",
+      "logoUrl": "https://livemediama.com/static/img/channels/medi1tv-maghreb.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/medi1tv-maghreb/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 Medi1",
+      "order": 10,
       "isActive": true
     },
     {
       "id": "medi1tv_arabic",
       "name": "Medi1TV Arabic",
       "iconName": "tabler_news",
+      "logoUrl": "https://livemediama.com/static/img/channels/medi1tv-arabic.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/medi1tv-arabic/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 Medi1",
-      "order": 6,
+      "order": 11,
+      "isActive": true
+    },
+    {
+      "id": "medi1tv_arabic_sd",
+      "name": "Medi1TV Arabic (SD)",
+      "iconName": "tabler_news",
+      "logoUrl": "https://livemediama.com/static/img/channels/medi1tv-arabic.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/medi1tv-arabic/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 Medi1",
+      "order": 12,
       "isActive": true
     },
     {
       "id": "arryadia_hd",
       "name": "Arryadia HD",
       "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/arryadia/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT Sport",
-      "order": 7,
+      "order": 13,
+      "isActive": true
+    },
+    {
+      "id": "arryadia_hd_sd",
+      "name": "Arryadia HD (SD)",
+      "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/arryadia/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT Sport",
+      "order": 14,
       "isActive": true
     },
     {
       "id": "arryadia_tnt_hd",
       "name": "Arryadia TNT HD",
       "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia-tnt.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/arryadia-tnt/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT Sport",
-      "order": 8,
+      "order": 15,
+      "isActive": true
+    },
+    {
+      "id": "arryadia_tnt_hd_sd",
+      "name": "Arryadia TNT HD (SD)",
+      "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia-tnt.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/arryadia-tnt/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT Sport",
+      "order": 16,
       "isActive": true
     },
     {
       "id": "arryadia_hd_1",
       "name": "Arryadia HD 1",
       "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia-hd-01.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/arryadia-hd-01/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT Sport",
-      "order": 9,
+      "order": 17,
+      "isActive": true
+    },
+    {
+      "id": "arryadia_hd_1_sd",
+      "name": "Arryadia HD 1 (SD)",
+      "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia-hd-01.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/arryadia-hd-01/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT Sport",
+      "order": 18,
       "isActive": true
     },
     {
       "id": "arryadia_hd_2",
       "name": "Arryadia HD 2",
       "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia-hd-02.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/arryadia-hd-02/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT Sport",
-      "order": 10,
+      "order": 19,
+      "isActive": true
+    },
+    {
+      "id": "arryadia_hd_2_sd",
+      "name": "Arryadia HD 2 (SD)",
+      "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia-hd-02.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/arryadia-hd-02/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT Sport",
+      "order": 20,
       "isActive": true
     },
     {
       "id": "arryadia_hd_3",
       "name": "Arryadia HD 3",
       "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia-hd-03.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/arryadia-hd-03/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT Sport",
-      "order": 11,
+      "order": 21,
+      "isActive": true
+    },
+    {
+      "id": "arryadia_hd_3_sd",
+      "name": "Arryadia HD 3 (SD)",
+      "iconName": "tabler_soccer",
+      "logoUrl": "https://livemediama.com/static/img/channels/arryadia-hd-03.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/arryadia-hd-03/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT Sport",
+      "order": 22,
       "isActive": true
     },
     {
       "id": "al_maghribia_hd",
       "name": "Al Maghribia HD",
       "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/almaghribia.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/almaghribia/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT",
-      "order": 12,
+      "order": 23,
+      "isActive": true
+    },
+    {
+      "id": "al_maghribia_hd_sd",
+      "name": "Al Maghribia HD (SD)",
+      "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/almaghribia.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/almaghribia/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT",
+      "order": 24,
       "isActive": true
     },
     {
       "id": "assadissa_hd",
       "name": "Assadissa HD",
       "iconName": "tabler_balloon",
+      "logoUrl": "https://livemediama.com/static/img/channels/assadissa.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/assadissa/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT",
-      "order": 13,
+      "order": 25,
+      "isActive": true
+    },
+    {
+      "id": "assadissa_hd_sd",
+      "name": "Assadissa HD (SD)",
+      "iconName": "tabler_balloon",
+      "logoUrl": "https://livemediama.com/static/img/channels/assadissa.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/assadissa/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT",
+      "order": 26,
       "isActive": true
     },
     {
       "id": "tamazight_hd",
       "name": "Tamazight HD",
-      "iconName": "tabler_tv",
+      "iconName": "tabler_books",
+      "logoUrl": "https://livemediama.com/static/img/channels/tamazight.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/tamazight/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT",
-      "order": 14,
+      "order": 27,
+      "isActive": true
+    },
+    {
+      "id": "tamazight_hd_sd",
+      "name": "Tamazight HD (SD)",
+      "iconName": "tabler_books",
+      "logoUrl": "https://livemediama.com/static/img/channels/tamazight.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/tamazight/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT",
+      "order": 28,
       "isActive": true
     },
     {
       "id": "athaqafia_hd",
       "name": "Athaqafia HD",
       "iconName": "tabler_books",
+      "logoUrl": "https://livemediama.com/static/img/channels/attakafiya.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/athaqafia/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT",
-      "order": 15,
+      "order": 29,
+      "isActive": true
+    },
+    {
+      "id": "athaqafia_hd_sd",
+      "name": "Athaqafia HD (SD)",
+      "iconName": "tabler_books",
+      "logoUrl": "https://livemediama.com/static/img/channels/attakafiya.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/athaqafia/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT",
+      "order": 30,
       "isActive": true
     },
     {
       "id": "aflam_tv_hd",
       "name": "Aflam TV HD",
-      "iconName": "tabler_tv",
+      "iconName": "tabler_movie",
+      "logoUrl": "https://livemediama.com/static/img/channels/aflam.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/aflam/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT",
-      "order": 16,
+      "order": 31,
+      "isActive": true
+    },
+    {
+      "id": "aflam_tv_hd_sd",
+      "name": "Aflam TV HD (SD)",
+      "iconName": "tabler_movie",
+      "logoUrl": "https://livemediama.com/static/img/channels/aflam.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/aflam/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT",
+      "order": 32,
       "isActive": true
     },
     {
       "id": "laayoune_tv_hd",
       "name": "Laayoune TV HD",
       "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/laayoune.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/laayoune/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 SNRT",
-      "order": 17,
+      "order": 33,
+      "isActive": true
+    },
+    {
+      "id": "laayoune_tv_hd_sd",
+      "name": "Laayoune TV HD (SD)",
+      "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/laayoune.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/laayoune/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 SNRT",
+      "order": 34,
       "isActive": true
     },
     {
       "id": "tele_maroc_hd",
       "name": "Tele Maroc HD",
       "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/telemaroc.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/telemaroc/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 Other",
-      "order": 18,
+      "order": 35,
+      "isActive": true
+    },
+    {
+      "id": "tele_maroc_hd_sd",
+      "name": "Tele Maroc HD (SD)",
+      "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/telemaroc.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/telemaroc/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 Other",
+      "order": 36,
       "isActive": true
     },
     {
       "id": "m24_maroc",
       "name": "M24 Maroc",
       "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/m24maroc.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/m24maroc/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 Other",
-      "order": 19,
+      "order": 37,
+      "isActive": true
+    },
+    {
+      "id": "m24_maroc_sd",
+      "name": "M24 Maroc (SD)",
+      "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/m24maroc.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/m24maroc/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 Other",
+      "order": 38,
       "isActive": true
     },
     {
       "id": "chada_tv",
       "name": "Chada TV",
       "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/chadatv.png",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/chadatv/hls/master.m3u8",
           "protocol": "hls",
-          "quality": 0
+          "quality": 1080
         }
       ],
       "country": "Morocco",
       "category": "🇲🇦 Other",
-      "order": 20,
+      "order": 39,
+      "isActive": true
+    },
+    {
+      "id": "chada_tv_sd",
+      "name": "Chada TV (SD)",
+      "iconName": "tabler_tv",
+      "logoUrl": "https://livemediama.com/static/img/channels/chadatv.png",
+      "streamUrls": [
+        {
+          "url": "https://stream-lb.livemediama.com/chadatv/hls/master.m3u8",
+          "protocol": "hls",
+          "quality": 480
+        }
+      ],
+      "country": "Morocco",
+      "category": "🇲🇦 Other",
+      "order": 40,
       "isActive": true
     }
   ]
