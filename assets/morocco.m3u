@@ -1,0 +1,111 @@
+#EXTM3U
+
+##############################################################
+##  MOROCCAN TV - livemediama.com / AtlasStream CDN         ##
+##  20 channels — stream-lb.livemediama.com                 ##
+##  Slugs verified from page source, April 2026             ##
+##############################################################
+
+## =============================================
+##  AL AOULA
+## =============================================
+
+#EXTINF:-1 tvg-name="Al Aoula HD" tvg-logo="https://livemediama.com/static/img/channels/alaoula.png" group-title="🇲🇦 SNRT",Al Aoula HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/alaoula/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Al Aoula TNT HD" tvg-logo="https://livemediama.com/static/img/channels/alaoula.png" group-title="🇲🇦 SNRT",Al Aoula TNT HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/alaoula-tnt/hls/master.m3u8
+
+## =============================================
+##  2M
+## =============================================
+
+#EXTINF:-1 tvg-name="2M TV HD" tvg-logo="https://livemediama.com/static/img/channels/2m.png" group-title="🇲🇦 2M",2M TV HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/2m/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="2M TNT HD" tvg-logo="https://livemediama.com/static/img/channels/2m.png" group-title="🇲🇦 2M",2M TNT HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/2m-tnt/hls/master.m3u8
+
+## =============================================
+##  MEDI1
+## =============================================
+
+#EXTINF:-1 tvg-name="Medi1TV Maghreb" tvg-logo="https://livemediama.com/static/img/channels/medi1tv-maghreb.png" group-title="🇲🇦 Medi1",Medi1TV Maghreb
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/medi1tv-maghreb/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Medi1TV Arabic" tvg-logo="https://livemediama.com/static/img/channels/medi1tv-arabic.png" group-title="🇲🇦 Medi1",Medi1TV Arabic
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/medi1tv-arabic/hls/master.m3u8
+
+## =============================================
+##  ARRYADIA (SPORT)
+## =============================================
+
+#EXTINF:-1 tvg-name="Arryadia HD" tvg-logo="https://livemediama.com/static/img/channels/arryadia.png" group-title="🇲🇦 SNRT Sport",Arryadia HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/arryadia/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Arryadia TNT HD" tvg-logo="https://livemediama.com/static/img/channels/arryadia-tnt.png" group-title="🇲🇦 SNRT Sport",Arryadia TNT HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/arryadia-tnt/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Arryadia HD 1" tvg-logo="https://livemediama.com/static/img/channels/arryadia-hd-01.png" group-title="🇲🇦 SNRT Sport",Arryadia HD 1
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/arryadia-hd-01/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Arryadia HD 2" tvg-logo="https://livemediama.com/static/img/channels/arryadia-hd-02.png" group-title="🇲🇦 SNRT Sport",Arryadia HD 2
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/arryadia-hd-02/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Arryadia HD 3" tvg-logo="https://livemediama.com/static/img/channels/arryadia-hd-03.png" group-title="🇲🇦 SNRT Sport",Arryadia HD 3
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/arryadia-hd-03/hls/master.m3u8
+
+## =============================================
+##  OTHER SNRT CHANNELS
+## =============================================
+
+#EXTINF:-1 tvg-name="Al Maghribia HD" tvg-logo="https://livemediama.com/static/img/channels/almaghribia.png" group-title="🇲🇦 SNRT",Al Maghribia HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/almaghribia/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Assadissa HD" tvg-logo="https://livemediama.com/static/img/channels/assadissa.png" group-title="🇲🇦 SNRT",Assadissa HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/assadissa/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Tamazight HD" tvg-logo="https://livemediama.com/static/img/channels/tamazight.png" group-title="🇲🇦 SNRT",Tamazight HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/tamazight/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Athaqafia HD" tvg-logo="https://livemediama.com/static/img/channels/attakafiya.png" group-title="🇲🇦 SNRT",Athaqafia HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/athaqafia/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Aflam TV HD" tvg-logo="https://livemediama.com/static/img/channels/aflam.png" group-title="🇲🇦 SNRT",Aflam TV HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/aflam/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Laayoune TV HD" tvg-logo="https://livemediama.com/static/img/channels/laayoune.png" group-title="🇲🇦 SNRT",Laayoune TV HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/laayoune/hls/master.m3u8
+
+## =============================================
+##  OTHER MOROCCAN CHANNELS
+## =============================================
+
+#EXTINF:-1 tvg-name="Tele Maroc HD" tvg-logo="https://livemediama.com/static/img/channels/telemaroc.png" group-title="🇲🇦 Other",Tele Maroc HD
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/telemaroc/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="M24 Maroc" tvg-logo="https://livemediama.com/static/img/channels/m24maroc.png" group-title="🇲🇦 Other",M24 Maroc
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/m24maroc/hls/master.m3u8
+
+#EXTINF:-1 tvg-name="Chada TV" tvg-logo="https://livemediama.com/static/img/channels/chadatv.png" group-title="🇲🇦 Other",Chada TV
+#EXTVLCOPT:http-referrer=https://livemediama.com/
+https://stream-lb.livemediama.com/chadatv/hls/master.m3u8

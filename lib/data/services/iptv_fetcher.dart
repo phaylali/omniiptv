@@ -32,7 +32,7 @@ class IptvFetcher {
         }
       } else if (line.isNotEmpty && !line.startsWith('#')) {
         currentUrl = line.trim();
-        if (currentName != null && currentUrl != null) {
+        if (currentName != null) {
           final id = currentName.toLowerCase().replaceAll(' ', '_');
           channels.add(
             Channel(

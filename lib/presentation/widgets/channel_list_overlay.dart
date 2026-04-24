@@ -9,10 +9,10 @@ class ChannelListOverlay extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final channels = ref.watch(channelsByOrderProvider);
+    final channels = ref.watch(activeChannelsProvider);
 
     return Container(
-      color: Colors.black.withOpacity(0.9),
+      color: Colors.black.withValues(alpha: 0.9),
       child: Column(
         children: [
           // Header
@@ -70,7 +70,7 @@ class ChannelTile extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () {
-        final channels = ref.read(channelsByOrderProvider);
+        final channels = ref.read(activeChannelsProvider);
         final index = channels.indexOf(channel);
         if (index != -1) {
           ref.read(channelIndexProvider.notifier).state = index;

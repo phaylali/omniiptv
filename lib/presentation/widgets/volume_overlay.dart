@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/constants/app_constants.dart';
 import '../../providers/overlay_provider.dart';
 import '../../providers/player_provider.dart';
 
@@ -12,7 +11,7 @@ class VolumeOverlay extends ConsumerWidget {
     final volume = ref.watch(volumeProvider);
 
     return Container(
-      color: Colors.black.withOpacity(0.8),
+      color: Colors.black.withValues(alpha: 0.8),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
 import '../../providers/channel_provider.dart';
+import '../../data/models/channel.dart';
 
 class ChannelNotification extends ConsumerStatefulWidget {
   const ChannelNotification({super.key});
@@ -16,6 +17,7 @@ class _ChannelNotificationState extends ConsumerState<ChannelNotification>
   AnimationController? _animationController;
   Animation<Offset>? _slideAnimation;
   bool _isVisible = false;
+  bool _listenerAdded = false;
 
   @override
   void initState() {
@@ -57,11 +59,15 @@ class _ChannelNotificationState extends ConsumerState<ChannelNotification>
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(currentChannelProvider, (previous, next) {
-      if (next != null && next != previous) {
-        _showNotification();
-      }
-    });
+    // Add listener only once
+    if (!_listenerAdded) {
+      _listenerAdded = true;
+      ref.listen<Channel?>(currentChannelProvider, (previous, next) {
+        if (next != null && next != previous) {
+          _showNotification();
+        }
+      });
+    }
 
     final channel = ref.watch(currentChannelProvider);
     if (channel == null) return const SizedBox.shrink();
@@ -74,11 +80,11 @@ class _ChannelNotificationState extends ConsumerState<ChannelNotification>
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(16),
-        color: Colors.black.withOpacity(0.8),
+        color: Colors.black.withValues(alpha: 0.8),
         child: Row(
           children: [
             Text(
-              '${channel.order.toString().padLeft(2, '0')}',
+              channel.order.toString().padLeft(2, '0'),
               style: const TextStyle(color: Colors.white, fontSize: 24),
             ),
             const SizedBox(width: 16),

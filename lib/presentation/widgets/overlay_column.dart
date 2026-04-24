@@ -14,6 +14,7 @@ class OverlayColumn extends ConsumerStatefulWidget {
 
 class _OverlayColumnState extends ConsumerState<OverlayColumn> {
   Timer? _hideTimer;
+  bool _listenerAdded = false;
 
   @override
   void dispose() {
@@ -36,6 +37,18 @@ class _OverlayColumnState extends ConsumerState<OverlayColumn> {
 
   @override
   Widget build(BuildContext context) {
+    // Add listener only once
+    if (!_listenerAdded) {
+      _listenerAdded = true;
+      ref.listen<bool>(showOverlayProvider, (previous, isVisible) {
+        if (isVisible) {
+          _resetHideTimer();
+        } else {
+          _hideTimer?.cancel();
+        }
+      });
+    }
+
     final showOverlay = ref.watch(showOverlayProvider);
 
     if (!showOverlay) return const SizedBox.shrink();
@@ -46,7 +59,7 @@ class _OverlayColumnState extends ConsumerState<OverlayColumn> {
       bottom: 0,
       child: Container(
         width: 80,
-        color: Colors.black.withOpacity(AppConstants.overlayOpacity),
+        color: Colors.black.withValues(alpha: AppConstants.overlayOpacity),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

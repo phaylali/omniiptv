@@ -1,12 +1,12 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-04-24T02:55:41.578002",
+  "lastUpdated": "2026-04-24T02:56:04.844552",
   "source": "assets/morocco.m3u",
   "channels": [
     {
       "id": "al_aoula_hd",
       "name": "Al Aoula HD",
-      "iconName": "tabler_tv",
+      "iconName": "tabler_news",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/alaoula/hls/master.m3u8",
@@ -22,7 +22,7 @@
     {
       "id": "al_aoula_tnt_hd",
       "name": "Al Aoula TNT HD",
-      "iconName": "tabler_tv",
+      "iconName": "tabler_news",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/alaoula-tnt/hls/master.m3u8",
@@ -214,7 +214,7 @@
     {
       "id": "tamazight_hd",
       "name": "Tamazight HD",
-      "iconName": "tabler_tv",
+      "iconName": "tabler_books",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/tamazight/hls/master.m3u8",
@@ -246,7 +246,7 @@
     {
       "id": "aflam_tv_hd",
       "name": "Aflam TV HD",
-      "iconName": "tabler_tv",
+      "iconName": "tabler_movie",
       "streamUrls": [
         {
           "url": "https://stream-lb.livemediama.com/aflam/hls/master.m3u8",

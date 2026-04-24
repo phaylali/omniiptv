@@ -57,6 +57,29 @@ class Channel {
   factory Channel.fromJson(Map<String, dynamic> json) =>
       _$ChannelFromJson(json);
   Map<String, dynamic> toJson() => _$ChannelToJson(this);
+
+  // CopyWith method for easy modification
+  Channel copyWith({
+    String? id,
+    String? name,
+    String? iconName,
+    List<StreamUrl>? streamUrls,
+    String? country,
+    String? category,
+    int? order,
+    bool? isActive,
+  }) {
+    return Channel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      iconName: iconName ?? this.iconName,
+      streamUrls: streamUrls ?? this.streamUrls,
+      country: country ?? this.country,
+      category: category ?? this.category,
+      order: order ?? this.order,
+      isActive: isActive ?? this.isActive,
+    );
+  }
 }
 
 @JsonSerializable()

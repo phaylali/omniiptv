@@ -12,7 +12,7 @@ class InfoOverlay extends ConsumerWidget {
 
     if (channel == null) {
       return Container(
-        color: Colors.black.withOpacity(0.8),
+        color: Colors.black.withValues(alpha: 0.8),
         child: const Center(
           child: Text(
             'No channel selected',
@@ -23,7 +23,7 @@ class InfoOverlay extends ConsumerWidget {
     }
 
     return Container(
-      color: Colors.black.withOpacity(0.8),
+      color: Colors.black.withValues(alpha: 0.8),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
