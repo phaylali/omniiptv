@@ -17,7 +17,7 @@ class _ChannelNotificationState extends ConsumerState<ChannelNotification>
   AnimationController? _animationController;
   Animation<Offset>? _slideAnimation;
   bool _isVisible = false;
-  bool _listenerAdded = false;
+  final bool _listenerAdded = false;
 
   @override
   void initState() {
@@ -108,8 +108,11 @@ class _ChannelNotificationState extends ConsumerState<ChannelNotification>
                   ? Image.network(
                       channel.logoUrl!,
                       fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) =>
-                          Icon(channel.icon, color: Colors.white, size: 96), // Tripled icon size too
+                      errorBuilder: (context, error, stackTrace) => Icon(
+                        channel.icon,
+                        color: Colors.white,
+                        size: 96,
+                      ), // Tripled icon size too
                     )
                   : Icon(channel.icon, color: Colors.white, size: 96),
             ),

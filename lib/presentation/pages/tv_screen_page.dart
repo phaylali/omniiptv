@@ -26,7 +26,7 @@ class TvScreenPage extends ConsumerStatefulWidget {
 
 class _TvScreenPageState extends ConsumerState<TvScreenPage> {
   final FocusNode _focusNode = FocusNode();
-  bool _listenersAdded = false;
+  final bool _listenersAdded = false;
 
   @override
   void initState() {
@@ -63,8 +63,9 @@ class _TvScreenPageState extends ConsumerState<TvScreenPage> {
       if (mounted && channels.channels.isNotEmpty) {
         final savedChannelId = await StorageService.loadCurrentChannelId();
         if (savedChannelId != null) {
-          final index =
-              channels.channels.indexWhere((c) => c.id == savedChannelId);
+          final index = channels.channels.indexWhere(
+            (c) => c.id == savedChannelId,
+          );
           if (index != -1) {
             ref.read(channelIndexProvider.notifier).state = index;
             return;
@@ -83,7 +84,6 @@ class _TvScreenPageState extends ConsumerState<TvScreenPage> {
 
   @override
   Widget build(BuildContext context) {
-
     final showOverlay = ref.watch(showOverlayProvider);
     final overlayType = ref.watch(overlayTypeProvider);
 

@@ -14,7 +14,7 @@ class OverlayColumn extends ConsumerStatefulWidget {
 
 class _OverlayColumnState extends ConsumerState<OverlayColumn> {
   Timer? _hideTimer;
-  bool _listenerAdded = false;
+  final bool _listenerAdded = false;
 
   @override
   void dispose() {
@@ -25,7 +25,7 @@ class _OverlayColumnState extends ConsumerState<OverlayColumn> {
   void _resetHideTimer() {
     _hideTimer?.cancel();
     final currentType = ref.read(overlayTypeProvider);
-    
+
     // Never start a timer for settings
     if (currentType == OverlayType.settings) {
       return;
