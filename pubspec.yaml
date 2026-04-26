@@ -58,6 +58,8 @@ dependencies:
   media_kit_libs_linux: ^1.2.1
   file_picker: ^11.0.0
   crypto: ^3.0.7
+  audio_session: ^0.1.25
+  audio_service: ^0.18.18
 
 dev_dependencies:
   flutter_test:

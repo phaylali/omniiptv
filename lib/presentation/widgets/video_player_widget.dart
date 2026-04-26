@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:media_kit/media_kit.dart';
@@ -5,6 +6,7 @@ import 'package:media_kit_video/media_kit_video.dart';
 import '../../providers/channel_provider.dart';
 import '../../providers/player_provider.dart';
 import '../../data/models/channel.dart';
+import '../../data/services/player_service.dart';
 
 class VideoPlayerWidget extends ConsumerStatefulWidget {
   const VideoPlayerWidget({super.key});
@@ -59,31 +61,12 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
       // Create new player with performance-focused configuration
       _player = Player(
         configuration: const PlayerConfiguration(
-          vo: 'gpu', // Switched from 'gpu-next' to 'gpu' for lower overhead
+          vo: 'gpu', 
         ),
       );
 
-      // Performance optimizations to lower CPU usage
-      if (_player!.platform is NativePlayer) {
-        final mpv = _player!.platform as NativePlayer;
-        await mpv.setProperty('profile', 'low-latency');
-        await mpv.setProperty('hwdec', 'auto-safe');
-        await mpv.setProperty('vd-lavc-threads', '4'); 
-        await mpv.setProperty('cache', 'yes');
-        await mpv.setProperty('demuxer-max-bytes', '50M');
-        await mpv.setProperty('demuxer-max-back-bytes', '10M');
-        
-        // Fast decoding & Skip loop filter (saves a lot of CPU)
-        await mpv.setProperty('vd-lavc-fast', 'yes');
-        await mpv.setProperty('vd-lavc-skiploopfilter', 'all'); 
-        await mpv.setProperty('hls-bitrate', 'min'); 
-
-        // Disable CPU-heavy post-processing
-        await mpv.setProperty('video-sync', 'audio'); 
-        await mpv.setProperty('interpolation', 'no'); 
-        await mpv.setProperty('deinterlace', 'no');   
-        await mpv.setProperty('scale', 'bilinear');   
-      }
+      // Centralized performance optimizations (H/W acceleration & low-latency)
+      await PlayerService.applyPerformanceFlags(_player!);
 
       _controller = VideoController(
         _player!,
@@ -93,57 +76,61 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
       );
       
       _errorMessage = '';
-      setState(() {}); 
+      if (mounted) setState(() {}); 
 
-    // Try each stream URL until one works
-    for (final streamUrl in channel.streamUrls) {
-      try {
-        Map<String, String> headers = {};
-        final url = streamUrl.url;
-        // ... (headers logic remains same)
-        if (url.contains('livemediama.com')) {
-          headers['Referer'] = 'https://livemediama.com/';
-          headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
-        } else if (url.contains('globecast') || url.contains('snrt')) {
-          headers['Referer'] = 'https://www.snrt.ma/';
-          headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
-        }
-
-        final media = Media(url, httpHeaders: headers);
-        
-        // Ultra-strict resolution and bitrate limiting
-        if (_player!.platform is NativePlayer) {
-          final mpv = _player!.platform as NativePlayer;
-          if (streamUrl.quality > 0 && streamUrl.quality <= 480) {
-            // Force 360p for SD channels
-            await mpv.setProperty('ytdl-format', 'bestvideo[height<=360]+bestaudio/best[height<=360]');
-            await mpv.setProperty('hls-cap-resolution', '640x360');
-          } else {
-            // Cap HD at 576p (Standard HD) for better performance
-            await mpv.setProperty('ytdl-format', 'bestvideo[height<=576]+bestaudio/best[height<=576]');
-            await mpv.setProperty('hls-cap-resolution', '1024x576');
+      // Try each stream URL until one works
+      for (final streamUrl in channel.streamUrls) {
+        try {
+          Map<String, String> headers = {};
+          final url = streamUrl.url;
+          
+          if (url.contains('livemediama.com')) {
+            headers['Referer'] = 'https://livemediama.com/';
+            headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
+          } else if (url.contains('globecast') || url.contains('snrt')) {
+            headers['Referer'] = 'https://www.snrt.ma/';
+            headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
           }
+
+          final media = Media(url, httpHeaders: headers);
+          
+          // Strict resolution and bitrate limiting (per URL)
+          if (_player!.platform is NativePlayer) {
+            final mpv = _player!.platform as NativePlayer;
+            if (streamUrl.quality > 0 && streamUrl.quality <= 480) {
+              await mpv.setProperty('ytdl-format', 'bestvideo[height<=360]+bestaudio/best[height<=360]');
+              await mpv.setProperty('hls-cap-resolution', '640x360');
+            } else {
+              await mpv.setProperty('ytdl-format', 'bestvideo[height<=576]+bestaudio/best[height<=576]');
+              await mpv.setProperty('hls-cap-resolution', '1024x576');
+            }
+          }
+
+          await _player!.open(media, play: true);
+          
+          // Set initial volume
+          final volume = ref.read(volumeProvider);
+          await _player!.setVolume(volume * 100);
+          
+          if (mounted) {
+            setState(() {
+              _errorMessage = '';
+            });
+          }
+          break; // Success, stop trying
+        } catch (e) {
+          // Continue to next URL
         }
-
-        await _player!.open(media, play: true);
-        // Set initial volume
-        final volume = ref.read(volumeProvider);
-        await _player!.setVolume(volume * 100);
-        setState(() {
-          _errorMessage = '';
-        });
-        break; // Success, stop trying
-      } catch (e) {
-        // Continue to next URL
       }
-    }
 
-    // If all URLs failed
-    if (_player == null || !(_player!.state.playing)) {
-      setState(() {
-        _errorMessage = 'Failed to load any stream for ${channel.name}';
-      });
-    }
+      // If all URLs failed
+      if (_player == null || !(_player!.state.playing)) {
+        if (mounted) {
+          setState(() {
+            _errorMessage = 'Failed to load any stream for ${channel.name}';
+          });
+        }
+      }
     } finally {
       _isInitializing = false;
     }

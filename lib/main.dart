@@ -7,12 +7,20 @@ import 'router.dart';
 import 'providers/channel_provider.dart';
 import 'data/services/auto_export_service.dart';
 
+import 'data/services/player_service.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
+  
+  // Initialize audio session
+  await PlayerService.init();
+
   // Small delay to ensure EGL context is ready on Linux
   if (Platform.isLinux) {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await windowManager.show();
+    await windowManager.focus();
+    await Future.delayed(const Duration(milliseconds: 300));
   }
   // Initialize media_kit
   MediaKit.ensureInitialized();
