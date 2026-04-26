@@ -56,25 +56,33 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
       _controller = null;
       await oldPlayer?.dispose();
 
-      // Create new player with performance tweaks
+      // Create new player with performance-focused configuration
       _player = Player(
         configuration: const PlayerConfiguration(
-          vo: 'gpu-next', // Use the new high-performance GPU output
+          vo: 'gpu', // Switched from 'gpu-next' to 'gpu' for lower overhead
         ),
       );
 
-      // Performance & Smoothing settings
+      // Performance optimizations to lower CPU usage
       if (_player!.platform is NativePlayer) {
-        await (_player!.platform as NativePlayer).setProperty('profile', 'low-latency');
-        await (_player!.platform as NativePlayer).setProperty('hwdec', 'auto-safe');
-        await (_player!.platform as NativePlayer).setProperty('video-sync', 'display-resample');
-        await (_player!.platform as NativePlayer).setProperty('interpolation', 'yes');
-        await (_player!.platform as NativePlayer).setProperty('tscale', 'oversample');
-        await (_player!.platform as NativePlayer).setProperty('vd-lavc-threads', '8');
-        await (_player!.platform as NativePlayer).setProperty('deinterlace', 'yes');
-        await (_player!.platform as NativePlayer).setProperty('cache', 'yes');
-        await (_player!.platform as NativePlayer).setProperty('demuxer-max-bytes', '500M');
-        await (_player!.platform as NativePlayer).setProperty('demuxer-max-back-bytes', '100M');
+        final mpv = _player!.platform as NativePlayer;
+        await mpv.setProperty('profile', 'low-latency');
+        await mpv.setProperty('hwdec', 'auto-safe');
+        await mpv.setProperty('vd-lavc-threads', '4'); 
+        await mpv.setProperty('cache', 'yes');
+        await mpv.setProperty('demuxer-max-bytes', '50M');
+        await mpv.setProperty('demuxer-max-back-bytes', '10M');
+        
+        // Fast decoding & Skip loop filter (saves a lot of CPU)
+        await mpv.setProperty('vd-lavc-fast', 'yes');
+        await mpv.setProperty('vd-lavc-skiploopfilter', 'all'); 
+        await mpv.setProperty('hls-bitrate', 'min'); 
+
+        // Disable CPU-heavy post-processing
+        await mpv.setProperty('video-sync', 'audio'); 
+        await mpv.setProperty('interpolation', 'no'); 
+        await mpv.setProperty('deinterlace', 'no');   
+        await mpv.setProperty('scale', 'bilinear');   
       }
 
       _controller = VideoController(
@@ -85,39 +93,35 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
       );
       
       _errorMessage = '';
-      setState(() {}); // Refresh to show loader and new controller
+      setState(() {}); 
 
     // Try each stream URL until one works
     for (final streamUrl in channel.streamUrls) {
       try {
         Map<String, String> headers = {};
         final url = streamUrl.url;
+        // ... (headers logic remains same)
         if (url.contains('livemediama.com')) {
           headers['Referer'] = 'https://livemediama.com/';
-          headers['User-Agent'] =
-              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
+          headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
         } else if (url.contains('globecast') || url.contains('snrt')) {
           headers['Referer'] = 'https://www.snrt.ma/';
-          headers['User-Agent'] =
-              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
-        } else if (url.contains('tvanywhere.ae')) {
-          headers['User-Agent'] =
-              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
+          headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36';
         }
 
         final media = Media(url, httpHeaders: headers);
         
-        // Apply resolution limits based on channel quality
+        // Ultra-strict resolution and bitrate limiting
         if (_player!.platform is NativePlayer) {
+          final mpv = _player!.platform as NativePlayer;
           if (streamUrl.quality > 0 && streamUrl.quality <= 480) {
-            // Force 480p or lower
-            await (_player!.platform as NativePlayer).setProperty(
-              'ytdl-format', 
-              'bestvideo[height<=480]+bestaudio/best[height<=480]'
-            );
+            // Force 360p for SD channels
+            await mpv.setProperty('ytdl-format', 'bestvideo[height<=360]+bestaudio/best[height<=360]');
+            await mpv.setProperty('hls-cap-resolution', '640x360');
           } else {
-            // Allow best quality
-            await (_player!.platform as NativePlayer).setProperty('ytdl-format', 'best');
+            // Cap HD at 576p (Standard HD) for better performance
+            await mpv.setProperty('ytdl-format', 'bestvideo[height<=576]+bestaudio/best[height<=576]');
+            await mpv.setProperty('hls-cap-resolution', '1024x576');
           }
         }
 

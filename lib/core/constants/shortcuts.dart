@@ -12,7 +12,7 @@ class AppShortcuts {
 
   // Overlay control
   static const LogicalKeyboardKey showOverlay = LogicalKeyboardKey.enter;
-  static const LogicalKeyboardKey hideOverlay = LogicalKeyboardKey.escape;
+  static const LogicalKeyboardKey hideOverlay = LogicalKeyboardKey.backspace;
 
   // Fullscreen toggle (Linux)
   static const LogicalKeyboardKey toggleFullscreen = LogicalKeyboardKey.f11;

@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:media_kit/media_kit.dart';
 import 'router.dart';
+import 'providers/channel_provider.dart';
+import 'data/services/auto_export_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,11 +26,22 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
 
+    // Automated channel export on startup (Desktop only)
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        final repository = ref.read(channelRepositoryProvider);
+        final channelList = await repository.loadAllChannels();
+        await AutoExportService.checkAndExport(channelList.channels);
+      } catch (e) {
+        // Silent fail on startup export
+      }
+    });
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'OmniIPTV',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple, brightness: Brightness.dark),
         useMaterial3: true,
       ),
       routerConfig: router,

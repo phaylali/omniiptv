@@ -12,7 +12,6 @@ import '../../core/utils/storage_service.dart';
 import '../widgets/video_player_widget.dart';
 import '../widgets/overlay_column.dart';
 import '../widgets/channel_notification.dart';
-import '../widgets/settings_overlay.dart';
 import '../widgets/channel_list_overlay.dart';
 import '../widgets/info_overlay.dart';
 import '../widgets/volume_overlay.dart';
@@ -97,8 +96,6 @@ class _TvScreenPageState extends ConsumerState<TvScreenPage> {
             const VideoPlayerWidget(),
             const ChannelNotification(),
             const OverlayColumn(),
-            if (showOverlay && overlayType == OverlayType.settings)
-              const SettingsOverlay(),
             if (showOverlay && overlayType == OverlayType.channelList)
               const ChannelListOverlay(),
             if (showOverlay && overlayType == OverlayType.info)
@@ -149,7 +146,12 @@ class _TvScreenPageState extends ConsumerState<TvScreenPage> {
           ref.read(showOverlayProvider.notifier).state = !showOverlay;
           break;
         case app_shortcuts.AppShortcuts.hideOverlay:
-          ref.read(showOverlayProvider.notifier).state = false;
+          final showOverlay = ref.read(showOverlayProvider);
+          if (showOverlay) {
+            ref.read(showOverlayProvider.notifier).state = false;
+          } else {
+            Navigator.pop(context);
+          }
           break;
         case app_shortcuts.AppShortcuts.toggleFullscreen:
           if (Platform.isLinux) {

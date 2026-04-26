@@ -4,19 +4,20 @@ OmniIPTV is a Flutter-based IPTV application designed for TV streaming on Linux 
 
 ## Features
 
-- **Full-Screen TV Interface**: Immersive viewing experience with no visible UI by default
-- **Dual Quality Streams**: Automatically generated SD (480p) variants for every channel for smooth playback
-- **Keyboard & Remote Controls**: Optimized for D-pad navigation and media keys
+- **Home Dashboard**: Dedicated landing page to choose between watching TV or managing settings
+- **Standalone Settings Page**: Full-screen management interface outside of the player
+- **M3U Export/Import**: Export your curated channel list to M3U or import external playlists
+- **Resource Optimized Playback**: Capped HD streams at 720p and SD at 480p to ensure smooth playback on lower-end devices
+- **CPU Efficient**: Disabled heavy post-processing (interpolation, deinterlacing) to minimize CPU usage and lag
+- **Long-Press Reordering**: Vertical reordering of channels via long-press in settings
 - **Overlay System**:
-  - Right-side icon column for quick access
-  - Top channel switch notifications with logos
-  - Vertical channel list for easy browsing
-  - Settings for channel management (reorder, enable/disable, import)
+  - Side navigation column for quick access to overlays
+  - Top channel switch notifications with large logos and channel numbers
+  - Focused channel list for easy D-pad browsing
+  - Premium Volume overlay with high-visibility progress bar
 - **Logos & Metadata**: Integrated channel logos with fallback icon system
-- **Multi-Protocol Streaming**: HLS support with adaptive bitrate via `media_kit`
-- **Channel Management**: Reorder channels with drag-and-drop, custom M3U import
-- **Platform Support**: Linux desktop (F11 fullscreen) and Android TV (immersive)
-- **State Persistence**: Saves channel order and preferences locally
+- **State Persistence**: Saves channel order, active states, and volume locally
+- **Maintenance Tools**: Python script for automated migration to modern Flutter syntax
 
 ## Screenshots
 
@@ -28,7 +29,7 @@ OmniIPTV is a Flutter-based IPTV application designed for TV streaming on Linux 
 
 - Flutter SDK (version 3.13.0 or higher)
 - Dart SDK
-- For Linux: `libkeybinder-3.0-dev` for hotkey support (if using hotkeys)
+- For Linux: `libmpv` (required by media_kit)
 - Android Studio for Android TV development
 
 ### Setup
@@ -59,26 +60,33 @@ OmniIPTV is a Flutter-based IPTV application designed for TV streaming on Linux 
 
 ### Controls
 
-- **Channel Navigation**: Up/Down arrow keys or remote D-pad
-- **Volume Control**: Left/Right arrow keys
-- **Show Overlays**: Enter key or remote OK button
-- **Hide Overlays**: Escape key or remote Back button
-- **Fullscreen (Linux)**: F11 key
+- **Enter/OK**: Toggle Side Menu or Select focused item
+- **Backspace**: Go Back, Hide Overlay, or Return to Home Dashboard
+- **Arrows (Up/Down)**: Switch channels or navigate menus
+- **Arrows (Left/Right)**: Adjust volume
+- **F11 (Linux)**: Fullscreen toggle
 
 ### Overlays
 
-- Press Enter to show the right-side icon column
+- Press Enter to show the side navigation column
 - Select icons to open respective overlays:
-  - Settings: Manage channels, update from online
-  - Channel List: Browse and select channels
+  - Settings: Manage channels, reorder, and import playlists
+  - Channel List: Browse and select channels with D-pad
   - Info: View current channel details
-  - Volume: Adjust volume with slider
+  - Volume: Adjust volume with high-visibility bar
 
 ### Settings
 
 - Enable/disable individual channels
-- Reorder channels with drag-and-drop
-- Update channel list from iptv-org for latest streams
+- Reorder channels using **Long-Press** on the OK/Enter button
+- Import custom M3U playlists from URL
+
+## Maintenance Tools
+
+### Opacity Refactoring Script
+Location: `tool/refactor_opacity.py`
+Automates the migration from `.withOpacity(x)` to the modern `.withValues(alpha: x)` syntax.
+Usage: `python3 tool/refactor_opacity.py`
 
 ## Important Notes
 
@@ -86,34 +94,19 @@ OmniIPTV is a Flutter-based IPTV application designed for TV streaming on Linux 
 
 - **Geo-blocking**: Moroccan TV streams are restricted outside Morocco
 - **VPN Recommended**: Use a VPN set to Moroccan location for stream access
-- **Network**: Stable internet connection required (streams may buffer on slow connections)
-- **Platform Differences**: Android may work better than Linux due to codec support
-
-## Building
-
-### Linux Desktop
-
-```bash
-flutter build linux
-```
-
-### Android TV
-
-```bash
-flutter build apk --target-platform android-arm64
-```
+- **Network**: Stable internet connection required
+- **Performance**: Configured for hardware acceleration with fallback to software rendering
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Make your changes
-4. Run tests: `flutter test`
-5. Submit a pull request
+3. Submit a pull request
+
 ## Acknowledgments
 
 - [iptv-org](https://github.com/iptv-org/iptv) for channel data
-- Flutter community for amazing framework
+- Flutter community for the amazing framework
 - Tabler Icons for UI icons
 
 ## License

@@ -65,6 +65,11 @@ class ChannelRepository {
       channels.addAll(importedWithOrder);
     }
 
+    // Final pass: Ensure channel.order matches the final list position
+    for (int i = 0; i < channels.length; i++) {
+      channels[i] = channels[i].copyWith(order: i + 1);
+    }
+
     return ChannelList(
       version: bundled.version,
       channels: channels,

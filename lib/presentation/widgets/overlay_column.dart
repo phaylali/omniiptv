@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+import 'package:go_router/go_router.dart';
 import '../../core/constants/app_constants.dart';
 import '../../providers/overlay_provider.dart';
 
@@ -14,7 +15,6 @@ class OverlayColumn extends ConsumerStatefulWidget {
 
 class _OverlayColumnState extends ConsumerState<OverlayColumn> {
   Timer? _hideTimer;
-  final bool _listenerAdded = false;
 
   @override
   void dispose() {
@@ -24,41 +24,19 @@ class _OverlayColumnState extends ConsumerState<OverlayColumn> {
 
   void _resetHideTimer() {
     _hideTimer?.cancel();
-    final currentType = ref.read(overlayTypeProvider);
-
-    // Never start a timer for settings
-    if (currentType == OverlayType.settings) {
-      return;
-    }
-
     _hideTimer = Timer(AppConstants.overlayAutoHideDuration, () {
-      // Double check before closing
-      final type = ref.read(overlayTypeProvider);
-      if (type != OverlayType.settings) {
-        debugPrint('Auto-hiding overlay of type: $type');
+      if (mounted) {
         ref.read(showOverlayProvider.notifier).state = false;
       }
     });
   }
 
-  void _showOverlay(OverlayType type) {
-    ref.read(overlayTypeProvider.notifier).state = type;
-    ref.read(showOverlayProvider.notifier).state = true;
-    _resetHideTimer();
-  }
-
   @override
   void initState() {
     super.initState();
-    // Persistence listener
     ref.listenManual<bool>(showOverlayProvider, (previous, isVisible) {
       if (isVisible) {
-        final currentType = ref.read(overlayTypeProvider);
-        if (currentType != OverlayType.settings) {
-          _resetHideTimer();
-        } else {
-          _hideTimer?.cancel();
-        }
+        _resetHideTimer();
       } else {
         _hideTimer?.cancel();
       }
@@ -76,34 +54,127 @@ class _OverlayColumnState extends ConsumerState<OverlayColumn> {
       top: 0,
       bottom: 0,
       child: Container(
-        width: 80,
-        color: Colors.black.withValues(alpha: AppConstants.overlayOpacity),
+        width: 100,
+        color: Colors.black.withOpacity(AppConstants.overlayOpacity),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            IconButton(
-              icon: const Icon(TablerIcons.settings, color: Colors.white),
-              iconSize: AppConstants.iconSize,
-              onPressed: () => _showOverlay(OverlayType.settings),
+            _NavButton(
+              autofocus: true,
+              icon: TablerIcons.settings,
+              label: 'SETTINGS',
+              onPressed: () {
+                ref.read(showOverlayProvider.notifier).state = false;
+                GoRouter.of(context).push('/settings');
+              },
+              onFocused: _resetHideTimer,
             ),
             SizedBox(height: AppConstants.iconSpacing),
-            IconButton(
-              icon: const Icon(TablerIcons.list, color: Colors.white),
-              iconSize: AppConstants.iconSize,
-              onPressed: () => _showOverlay(OverlayType.channelList),
+            _NavButton(
+              icon: TablerIcons.list,
+              label: 'CHANNELS',
+              onPressed: () {
+                ref.read(overlayTypeProvider.notifier).state =
+                    OverlayType.channelList;
+                _resetHideTimer();
+              },
+              onFocused: _resetHideTimer,
             ),
             SizedBox(height: AppConstants.iconSpacing),
-            IconButton(
-              icon: const Icon(TablerIcons.info_circle, color: Colors.white),
-              iconSize: AppConstants.iconSize,
-              onPressed: () => _showOverlay(OverlayType.info),
+            _NavButton(
+              icon: TablerIcons.info_circle,
+              label: 'INFO',
+              onPressed: () {
+                ref.read(overlayTypeProvider.notifier).state = OverlayType.info;
+                _resetHideTimer();
+              },
+              onFocused: _resetHideTimer,
             ),
             SizedBox(height: AppConstants.iconSpacing),
-            IconButton(
-              icon: const Icon(TablerIcons.volume, color: Colors.white),
-              iconSize: AppConstants.iconSize,
-              onPressed: () => _showOverlay(OverlayType.volume),
+            _NavButton(
+              icon: TablerIcons.volume,
+              label: 'VOLUME',
+              onPressed: () {
+                ref.read(overlayTypeProvider.notifier).state =
+                    OverlayType.volume;
+                _resetHideTimer();
+              },
+              onFocused: _resetHideTimer,
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _NavButton extends StatefulWidget {
+  final IconData icon;
+  final VoidCallback onPressed;
+  final String label;
+  final bool autofocus;
+  final VoidCallback onFocused;
+
+  const _NavButton({
+    required this.icon,
+    required this.onPressed,
+    required this.label,
+    required this.onFocused,
+    this.autofocus = false,
+  });
+
+  @override
+  State<_NavButton> createState() => _NavButtonState();
+}
+
+class _NavButtonState extends State<_NavButton> {
+  bool _isFocused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Focus(
+      autofocus: widget.autofocus,
+      onFocusChange: (hasFocus) {
+        setState(() => _isFocused = hasFocus);
+        if (hasFocus) widget.onFocused();
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: _isFocused
+                    ? Colors.blue.withValues(alpha: 0.3)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: _isFocused ? Colors.blue : Colors.transparent,
+                  width: 2,
+                ),
+              ),
+              child: IconButton(
+                icon: Icon(
+                  widget.icon,
+                  color: _isFocused ? Colors.blue : Colors.white,
+                ),
+                iconSize: AppConstants.iconSize * 1.2,
+                onPressed: widget.onPressed,
+              ),
+            ),
+            if (_isFocused)
+              Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  widget.label,
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
